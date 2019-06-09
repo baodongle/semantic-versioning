@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 from os.path import isfile
 
+from main import Version
+
 try:
     if isfile('VERSION'):
         with open('VERSION', 'r+') as f:
-            version = f.read()
-            pos = version.rfind('.') + 1
-            patch = int(version[pos:]) + 1
-            f.seek(pos)
-            f.write(str(patch))
+            content = f.read()
+            version = Version(content)
+            version.patch += 1
+            f.truncate()
+            f.write(str(version))
     else:
         with open('VERSION', 'w') as f:
             f.write('1.0.1')

@@ -107,24 +107,15 @@ class Version:
         return f'{self.major}.{self.minor}.{self.patch}'
 
     # Waypoint 6: Compare `Version` Instances
-    @staticmethod
-    def _is_valid_operand(other: Any) -> bool:
-        """Implements a form of deciding when to return NotImplemented."""
-        return all(hasattr(other, x) for x in ('major', 'minor', 'patch'))
-
-    def __lt__(self, other: Any) -> bool:
-        if not self._is_valid_operand(other):
-            return NotImplemented
+    def __lt__(self, other: 'Version') -> bool:
         return compare_versions(self.component, other.component) == -1
 
-    def __eq__(self, other: Any) -> bool:
-        if not self._is_valid_operand(other):
-            return NotImplemented
+    def __eq__(self, other: 'Version') -> bool:
         return not compare_versions(self.component, other.component)
 
 
 if __name__ == '__main__':
-    print(repr(Version("1.-2.8")))
+    print(repr(Version("1.2.8")))
     print(Version(1, 7, 0))
     # print(Version("1.2.8") > Version("2.4.5"))
     # print(Version("2.4.5") > Version("1.2.8"))

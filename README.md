@@ -58,7 +58,9 @@ Write a [Python class](https://docs.python.org/3/tutorial/classes.html) `Version
 
 - a string representation of a semantic versioning 3-component number (at least 1);
 - from 1 to 3 integers representing, in that particular order, `major`, `minor`, and `patch`;
-- a tuple of 3 integers `(major, minor, patch)`
+- a tuple from 1 to 3 integers representing, in that particular order, `major`, `minor`, and `patch`: `(major[, minor[, patch]])`.
+
+If `minor` and `patch` are not specified, their default value is `0`.
 
 For example:
 
@@ -70,7 +72,7 @@ For example:
 >>> Version(1, 2)
 >>> Version(1, 2, 8)
 >>> Version((1,))
->>> Version((1, 2)
+>>> Version((1, 2))
 >>> Version((1, 2, 8))
 ```
 
@@ -82,7 +84,7 @@ The class `Version` has 3 [instances variables](https://docs.python.org/3/tutori
 (2, 0, 0)
 >>> version = Version(1, 4)
 >>> (version.major, version.minor, version.patch)
-(1, 4, 0
+(1, 4, 0)
 >>> version = Version((10, 3, 284))
 >>> (version.major, version.minor, version.patch)
 (10, 3, 284)
