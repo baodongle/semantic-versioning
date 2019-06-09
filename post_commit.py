@@ -9,10 +9,13 @@ try:
             content = f.read()
             version = Version(content)
             version.patch += 1
+            f.seek(0)
             f.truncate()
             f.write(str(version))
     else:
         with open('VERSION', 'w') as f:
             f.write('1.0.1')
 except OSError:
-    print('Error occurred when access the version file!')
+    print('Error occurred when access file VERSION')
+except TypeError:
+    print(f'{content} is not a valid version')

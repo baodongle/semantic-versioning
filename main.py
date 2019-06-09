@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """Semantic Versioning"""
+from __future__ import annotations
+
 from functools import total_ordering
 from logging import exception
-from typing import Any, Sequence, Tuple
+from typing import Any, Optional, Sequence, Tuple
 
 # Type annotation for Tuple of Semantic Versioning:
 VersionTuple = Tuple[int, int, int]
 
 
 # Waypoint 1:
-def convert_string_to_version_component_numbers(string: str) -> Sequence[int]:
+def convert_string_to_version_component_numbers(string: str) \
+        -> Optional[Sequence[int]]:
     """
     Convert a Semantic Versioning Component Number String to a Tuple.
 
@@ -30,14 +33,14 @@ def convert_string_to_version_component_numbers(string: str) -> Sequence[int]:
         version = int(number)
         if version >= 0:
             return version
-        raise ValueError("The version must be positive!")
+        raise ValueError("Each number version must be positive!")
 
     try:
         component = list(map(_get_valid_version, string.strip().split('.')))
         return tuple(component[:3] + [0 for _ in range(3 - len(component))])
     except ValueError as e:
-        exception('Invalid input!\n' + str(e))
-        return 0, 0, 0
+        exception(f'Invalid input: {string}\n' + str(e))
+        return None
 
 
 # Waypoint 2:
@@ -107,25 +110,25 @@ class Version:
         return f'{self.major}.{self.minor}.{self.patch}'
 
     # Waypoint 6: Compare `Version` Instances
-    def __lt__(self, other: 'Version') -> bool:
+    def __lt__(self, other: Version) -> bool:
         return compare_versions(self.component, other.component) == -1
 
-    def __eq__(self, other: 'Version') -> bool:
+    def __eq__(self, other: Version) -> bool:
         return not compare_versions(self.component, other.component)
 
 
 if __name__ == '__main__':
-    print(repr(Version("1.2.8")))
-    print(Version(1, 7, 0))
-    # print(Version("1.2.8") > Version("2.4.5"))
-    # print(Version("2.4.5") > Version("1.2.8"))
-    # print(Version("1.2.8") < Version("2.4.5"))
-    # print(Version("2.4.5") < Version("1.2.8"))
-    # print(Version("2.4.5") == Version("1.2.8"))
-    # print(Version("2.4.5") == Version("2.4.5"))
-    # print(Version("2.4.5") != Version("2.4.5"))
-    # print(Version("2.4.5") != Version("1.2.8"))
-    # print(Version("2.4.5") >= Version("2.4.5"))
-    # print(Version("2.4.5") >= Version("1.2.8"))
-    # print(Version("2.4.5") <= Version("2.4.5"))
-    # print(Version("2.4.5") <= Version("1.2.8"))
+    # print(repr(Version("1.2.8")))
+    # print(Version(1, 7, 0))
+    print(Version("1.2.8") > Version("2.4.5"))
+    print(Version("2.4.5") > Version("1.2.8"))
+    print(Version("1.2.8") < Version("2.4.5"))
+    print(Version("2.4.5") < Version("1.2.8"))
+    print(Version("2.4.5") == Version("1.2.8"))
+    print(Version("2.4.5") == Version("2.4.5"))
+    print(Version("2.4.5") != Version("2.4.5"))
+    print(Version("2.4.5") != Version("1.2.8"))
+    print(Version("2.4.5") >= Version("2.4.5"))
+    print(Version("2.4.5") >= Version("1.2.8"))
+    print(Version("2.4.5") <= Version("2.4.5"))
+    print(Version("2.4.5") <= Version("1.2.8"))
